@@ -20,12 +20,19 @@ public class MyUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-
         TeamDao teamDao = new TeamDaoImpl();
-        SimulationView simulationView = new SimulationView();
+        teamDao.resetTable();
 
         Navigator navigator = new Navigator(this, this);
         navigator.addView(ViewName.TEAMS_VIEW, TeamsView.class);
+
+        if (teamDao.getAll().size() % 2 != 0)
+        {
+            Notification.show("Musisz dodać parzystą ilość drużyn i uruchomić program ponownie", Notification.Type.ERROR_MESSAGE);
+            navigator.navigateTo(ViewName.TEAMS_VIEW);
+        }
+
+        SimulationView simulationView = new SimulationView();
         navigator.addView(ViewName.SIMULATION_VIEW, simulationView);
         navigator.addView(ViewName.TABLE_VIEW, TableView.class);
         navigator.navigateTo(ViewName.TABLE_VIEW);

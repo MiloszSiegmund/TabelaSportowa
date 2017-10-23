@@ -52,13 +52,25 @@ public class TableView extends VerticalLayout implements View{
             navigator.navigateTo(ViewName.TEAMS_VIEW);
         });
         btnSimulationView.addClickListener(e -> {
-            Navigator navigator = UI.getCurrent().getNavigator();
-            navigator.navigateTo(ViewName.SIMULATION_VIEW);
+            if (teamDao.getAll().size() % 2 == 1)
+            {
+                Notification.show("Przygotuj parzyst ilość drużyn!", Notification.Type.ERROR_MESSAGE);
+            }
+            else {
+                Navigator navigator = UI.getCurrent().getNavigator();
+                navigator.navigateTo(ViewName.SIMULATION_VIEW);
+            }
         });
 
         btnContinueSimulation.addClickListener(e -> {
-            Navigator navigator = UI.getCurrent().getNavigator();
-            navigator.navigateTo(ViewName.SIMULATION_VIEW);
+            if (teamDao.getAll().size() % 2 == 1)
+            {
+                Notification.show("Przygotuj parzyst ilość drużyn!", Notification.Type.ERROR_MESSAGE);
+            }
+            else {
+                Navigator navigator = UI.getCurrent().getNavigator();
+                navigator.navigateTo(ViewName.SIMULATION_VIEW);
+            }
         });
     }
 

@@ -158,4 +158,29 @@ public class TeamDaoImpl implements TeamDao, Serializable {
 
 
     }
+
+    @Override
+    public void resetTable() {
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("PERSISTENCE");
+        EntityManager em = factory.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        try {
+            tx.begin();
+
+            Query query = em.createQuery("select t from Team t");
+            List<Team> teams = query.getResultList();
+            teams.forEach(t -> t.zeruj());
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
 }

@@ -14,4 +14,5 @@ public interface TeamDao {
     void delete(Long id);
     List<Team> getAll();
     Optional<Team> getById(Long id);
+    void resetTable();
 }

@@ -34,4 +34,15 @@ public class Team implements Serializable{
     private Integer stadiumCapacity;
     private String stadiumName;
 
+    public void zeruj()
+    {
+        played = 0;
+        wins = 0;
+        draws = 0;
+        losts = 0;
+        goalsFor = 0;
+        goalsAgainst = 0;
+        points = 0;
+    }
+
 }
