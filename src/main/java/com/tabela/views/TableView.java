@@ -16,9 +16,10 @@ import java.util.List;
  * Created by MiłoszSiegmund on 2017-10-06.
  */
 public class TableView extends VerticalLayout implements View{
-    private Button btnTeamsView = new Button("TEMS");
+    private Button btnTeamsView = new Button("TEAMS");
     private Button btnSimulationView = new Button("SIMULATION");
     private Button btnContinueSimulation = new Button("CONTINUE");
+    //private Button btnNewSimulation = new Button("NEW SIMULATION");
 
     private Grid<Team> teams = new Grid<>(Team.class);
     private TeamDao teamDao = new TeamDaoImpl();
@@ -28,6 +29,7 @@ public class TableView extends VerticalLayout implements View{
         teams.setCaption("RESULTS");
         teams.setSizeFull();
         teams.setColumnOrder(
+                "rank",
                 "name",
                 "played",
                 "wins",
@@ -43,13 +45,35 @@ public class TableView extends VerticalLayout implements View{
         teams.getColumn("stadiumCapacity").setHidden(true);
         teams.getColumn("stadiumName").setHidden(true);
 
+
         addComponent(teams);
 
-        addComponent(new HorizontalLayout(btnTeamsView, btnSimulationView, btnContinueSimulation));
+
+        teams.setStyleGenerator(e -> {
+            if (e.getRank() == 1)
+            {
+                return "first";
+            }
+            else if (e.getRank() == 2 || e.getRank() == 3){
+                return "second-third";
+            }
+            else if (e.getRank() == teamDao.getAll().size() || e.getRank() == teamDao.getAll().size() - 1)
+            {
+                return "last";
+            }
+            else
+            {
+                return "other";
+            }
+        });
+
+        addComponent(new HorizontalLayout(btnTeamsView, btnSimulationView, btnContinueSimulation/*, btnNewSimulation*/));
 
         btnTeamsView.addClickListener(e -> {
-            Navigator navigator = UI.getCurrent().getNavigator();
-            navigator.navigateTo(ViewName.TEAMS_VIEW);
+
+                Navigator navigator = UI.getCurrent().getNavigator();
+                navigator.navigateTo(ViewName.TEAMS_VIEW);
+
         });
         btnSimulationView.addClickListener(e -> {
             if (teamDao.getAll().size() % 2 == 1)
@@ -57,6 +81,11 @@ public class TableView extends VerticalLayout implements View{
                 Notification.show("Przygotuj parzyst ilość drużyn!", Notification.Type.ERROR_MESSAGE);
             }
             else {
+                if (SimulationInfo.simulationFinish)
+                {
+                    SimulationInfo.simulationFinish = false;
+                    teamDao.resetTable();
+                }
                 Navigator navigator = UI.getCurrent().getNavigator();
                 navigator.navigateTo(ViewName.SIMULATION_VIEW);
             }
@@ -72,7 +101,15 @@ public class TableView extends VerticalLayout implements View{
                 navigator.navigateTo(ViewName.SIMULATION_VIEW);
             }
         });
+
+        /*btnNewSimulation.addClickListener(e -> {
+            teamDao.resetTable();
+            Navigator navigator = UI.getCurrent().getNavigator();
+            SimulationView simulationView = new SimulationView();
+            navigator.navigateTo(ViewName.SIMULATION_VIEW);
+        });*/
     }
+
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
@@ -87,22 +124,32 @@ public class TableView extends VerticalLayout implements View{
                     return t2.getPoints().compareTo(t1.getPoints());
                 }
         );
+        for(int i = 1; i <= t.size(); ++i)
+        {
+            t.get(i - 1).setRank(i);
+        }
         teams.setItems(t);
+
 
         if (SimulationInfo.whichRound == (teamDao.getAll().size() - 1 ) * 2)
         {
             SimulationInfo.simulation = false;
+            SimulationInfo.simulationFinish = true;
         }
 
         if (!SimulationInfo.simulation)
         {
             btnSimulationView.setEnabled(true);
             btnContinueSimulation.setEnabled(false);
+            btnTeamsView.setEnabled(true);
+            //btnNewSimulation.setEnabled(true);
         }
         else
         {
             btnSimulationView.setEnabled(false);
             btnContinueSimulation.setEnabled(true);
+            btnTeamsView.setEnabled(false);
+            //btnNewSimulation.setEnabled(false);
         }
     }
 }

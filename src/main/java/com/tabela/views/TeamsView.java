@@ -8,6 +8,7 @@ import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.data.converter.StringToLongConverter;
 import com.vaadin.data.validator.IntegerRangeValidator;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
@@ -26,6 +27,7 @@ public class TeamsView extends VerticalLayout implements View {
     private final Button btnAdd = new Button("ADD TEAM");
     private final Button btnDelete = new Button("DELETE TEAM");
     private final Button btnUpdate = new Button("UPDATE TEAM");
+    private final Button btnSim = new Button("SIMULATE");
 
     private final TextField tfId = new TextField();
     private final TextField tfName = new TextField("TEAM NAME:");
@@ -47,7 +49,7 @@ public class TeamsView extends VerticalLayout implements View {
         btnUpdate.addStyleName(ValoTheme.BUTTON_FRIENDLY);
 
         HorizontalLayout layout = new HorizontalLayout();
-        layout.addComponents(btnAdd, btnUpdate, btnDelete);
+        layout.addComponents(btnAdd, btnUpdate, btnDelete, btnSim);
         return layout;
     }
 
@@ -70,6 +72,7 @@ public class TeamsView extends VerticalLayout implements View {
     {
         grid.setCaption("TEAMS");
         grid.getColumn("id").setHidden(true);
+        grid.getColumn("rank").setHidden(true);
         grid.getColumn("wins").setHidden(true);
         grid.getColumn("losts").setHidden(true);
         grid.getColumn("draws").setHidden(true);
@@ -138,7 +141,7 @@ public class TeamsView extends VerticalLayout implements View {
                 team.setPoints(0);
 
                 teamDao.add(team);
-                grid.setItems(teamDao.getAll());
+                //grid.setItems(teamDao.getAll());
                 Team team1 = Team
                         .builder()
                         .id(0L)
@@ -148,6 +151,7 @@ public class TeamsView extends VerticalLayout implements View {
                         .quality(1)
                         .build();
                 formBinder.readBean(team1);
+                grid.setItems(teamDao.getAll());
             } catch (ValidationException e1)
             {
                 Notification.show("Niepoprawne dane", Notification.Type.ERROR_MESSAGE);
@@ -191,6 +195,11 @@ public class TeamsView extends VerticalLayout implements View {
             {
                 formBinder.readBean(team.get());
             }
+        });
+
+        btnSim.addClickListener(e->{
+            Navigator navigator = UI.getCurrent().getNavigator();
+            navigator.navigateTo(ViewName.SIMULATION_VIEW);
         });
     }
 

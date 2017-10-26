@@ -11,9 +11,9 @@ import java.util.Optional;
  * Created by MiłoszSiegmund on 2017-09-11.
  */
 public class TeamDaoImpl implements TeamDao, Serializable {
+    private static EntityManagerFactory factory = Persistence.createEntityManagerFactory("PERSISTENCE");
     @Override
     public void add(Team team) {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("PERSISTENCE");
         EntityManager em = factory.createEntityManager();
         EntityTransaction tx = em.getTransaction();
 
@@ -37,7 +37,6 @@ public class TeamDaoImpl implements TeamDao, Serializable {
 
     @Override
     public void update(Team team) {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("PERSISTENCE");
         EntityManager em = factory.createEntityManager();
         EntityTransaction tx = em.getTransaction();
 
@@ -76,8 +75,6 @@ public class TeamDaoImpl implements TeamDao, Serializable {
 
     @Override
     public void delete(Long id) {
-
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("PERSISTENCE");
         EntityManager em = factory.createEntityManager();
         EntityTransaction tx = em.getTransaction();
 
@@ -104,7 +101,6 @@ public class TeamDaoImpl implements TeamDao, Serializable {
 
     @Override
     public List<Team> getAll() {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("PERSISTENCE");
         EntityManager em = factory.createEntityManager();
         EntityTransaction tx = em.getTransaction();
 
@@ -132,7 +128,6 @@ public class TeamDaoImpl implements TeamDao, Serializable {
 
     @Override
     public Optional<Team> getById(Long id) {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("PERSISTENCE");
         EntityManager em = factory.createEntityManager();
         EntityTransaction tx = em.getTransaction();
 
@@ -161,7 +156,6 @@ public class TeamDaoImpl implements TeamDao, Serializable {
 
     @Override
     public void resetTable() {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("PERSISTENCE");
         EntityManager em = factory.createEntityManager();
         EntityTransaction tx = em.getTransaction();
 

@@ -8,4 +8,5 @@ public class SimulationInfo {
     //a jak na tru tzn ze jest symulacja
     public static int whichRound; //pozwoli nam przechwytywac informacje ktora aktualnie kolejna jest
     //symulowana
+    public static boolean simulationFinish;
 }

@@ -85,4 +85,9 @@ public class RoundLayout extends VerticalLayout {
     public Button getBtnSimulateRound() {
         return btnSimulateRound;
     }
+
+    public void setAllActive()
+    {
+        matchLayouts.forEach(m -> m.setSimulationButtonActive(true));
+    }
 }

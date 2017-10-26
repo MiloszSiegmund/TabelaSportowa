@@ -92,6 +92,18 @@
     margin-left: 100px;
     display: table-column;
   }
+  .v-grid-row.first > td {
+    background-color: green;
+  }
+  .v-grid-row.second-third > td {
+    background-color: yellowgreen;
+  }
+  .v-grid-row.last > td {
+    background-color: red;
+  }
+  .v-grid-row.other > td {
+    background-color: grey;
+  }
 
 
 

@@ -1,9 +1,6 @@
 package com.tabela.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,6 +19,7 @@ public class Team implements Serializable{
     @Id
     @GeneratedValue
     private Long id;
+    private Integer rank;
     private String name;
     private Integer played;
     private Integer wins;
@@ -34,8 +32,14 @@ public class Team implements Serializable{
     private Integer stadiumCapacity;
     private String stadiumName;
 
+
+
+
+
     public void zeruj()
     {
+
+        rank = 1;
         played = 0;
         wins = 0;
         draws = 0;
