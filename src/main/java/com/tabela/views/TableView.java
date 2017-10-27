@@ -19,7 +19,7 @@ public class TableView extends VerticalLayout implements View{
     private Button btnTeamsView = new Button("TEAMS");
     private Button btnSimulationView = new Button("SIMULATION");
     private Button btnContinueSimulation = new Button("CONTINUE");
-    //private Button btnNewSimulation = new Button("NEW SIMULATION");
+    
 
     private Grid<Team> teams = new Grid<>(Team.class);
     private TeamDao teamDao = new TeamDaoImpl();
@@ -81,11 +81,6 @@ public class TableView extends VerticalLayout implements View{
                 Notification.show("Przygotuj parzyst ilość drużyn!", Notification.Type.ERROR_MESSAGE);
             }
             else {
-                if (SimulationInfo.simulationFinish)
-                {
-                    SimulationInfo.simulationFinish = false;
-                    teamDao.resetTable();
-                }
                 Navigator navigator = UI.getCurrent().getNavigator();
                 navigator.navigateTo(ViewName.SIMULATION_VIEW);
             }
@@ -102,12 +97,7 @@ public class TableView extends VerticalLayout implements View{
             }
         });
 
-        /*btnNewSimulation.addClickListener(e -> {
-            teamDao.resetTable();
-            Navigator navigator = UI.getCurrent().getNavigator();
-            SimulationView simulationView = new SimulationView();
-            navigator.navigateTo(ViewName.SIMULATION_VIEW);
-        });*/
+
     }
 
 
@@ -142,14 +132,14 @@ public class TableView extends VerticalLayout implements View{
             btnSimulationView.setEnabled(true);
             btnContinueSimulation.setEnabled(false);
             btnTeamsView.setEnabled(true);
-            //btnNewSimulation.setEnabled(true);
+
         }
         else
         {
             btnSimulationView.setEnabled(false);
             btnContinueSimulation.setEnabled(true);
             btnTeamsView.setEnabled(false);
-            //btnNewSimulation.setEnabled(false);
+
         }
     }
 }
